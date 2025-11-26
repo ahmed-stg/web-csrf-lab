@@ -10,12 +10,14 @@ This lab demonstrates common web authentication mechanisms and their vulnerabili
 - **mongo-data/**: MongoDB data volume (ignored in git)
 
 ## How to Run
-1. **Start MongoDB and Node server** (recommended: use Docker Compose):
+1. **Start MongoDB and Node server and serve frontend** :
    ```bash
    docker compose up -d
-   docker compose exec -it node npm run start
+   docker compose exec -d node npm i
+   docker compose exec -d node npm run start
+
    ```
-2. **Start the malicious server** (in a separate terminal):
+2. **Start the malicious server** :
    ```bash
    python3 malicious_server.py
    ```
@@ -41,7 +43,7 @@ This lab demonstrates common web authentication mechanisms and their vulnerabili
 
 ## Educational Purpose
 This lab is for demonstration and learning only. Do not use these techniques in production or against systems you do not own.
-
+You can see different tokens being stored live using Inspect tools.
 ---
 
 **See `csrf_pocs.md` and the `malicious/` folder for attack scripts and PoCs.**
