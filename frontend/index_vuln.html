@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management App (VULNERABLE)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">Vulnerable scenario</p>
+                <h1>Cookie-based auth attack lab</h1>
+                <p>This intentionally insecure build mirrors the neon-secure UI but leaves cookie-based flows exposed. Use it to demonstrate CSRF impact end-to-end.</p>
+                <div class="form-actions" style="margin-top: 18px;">
+                    <a class="btn btn-secondary" href="index.html">Return to hardened build</a>
+                    <a class="btn btn-ghost" href="../malicious/index.html">Open attack companion</a>
+                </div>
+            </div>
+            <div id="userInfo" class="user-info" style="display: none;">
+                <span id="welcomeMsg"></span>
+                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+            </div>
+        </header>
+
+        <section class="dashboard">
+            <div id="authSection" class="panel-stack">
+                <div class="panel warning" style="margin-bottom: 18px;">
+                    <div class="warning-box">
+                        <h3>⚠️ EDUCATIONAL PURPOSE ONLY</h3>
+                        <p><strong>This version uses insecure cookie-based authentication vulnerable to CSRF attacks.</strong></p>
+                        <ul>
+                            <li>🍪 Cookies are readable via JavaScript and sent with every request</li>
+                            <li>💀 Absent CSRF tokens &amp; SameSite protection</li>
+                            <li>🚨 Perfect target for the companion malicious page</li>
+                        </ul>
+                        <p><em>Login, inspect cookies, then trigger attacks from the companion tab.</em></p>
+                    </div>
+                </div>
+
+                <div class="panel-header">
+                    <span class="panel-label">Vulnerable auth</span>
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="cookieLogin">Cookie Login</button>
+                        <button class="tab-btn" data-tab="register">Register</button>
+                    </div>
+                </div>
+
+                <div id="cookieLoginForm" class="form-panel active">
+                    <h2>🍪 Cookie-based login (unsafe)</h2>
+                    <p class="helper-text">Credentials travel over JSON, but session state is stored in writable cookies. Anything with your browser can replay them.</p>
+                    <form id="cookieLoginFormEl">
+                        <input type="text" id="cookieLoginUsername" placeholder="Username" required>
+                        <input type="password" id="cookieLoginPassword" placeholder="Password" required>
+                        <button type="submit" class="btn btn-warning">Login with insecure cookies</button>
+                    </form>
+                    <div class="warning-box" style="margin-top: 12px;">
+                        <strong>💡 Testing playbook</strong>
+                        <ol>
+                            <li>Authenticate here and inspect <code>authToken</code> / <code>userId</code> cookies.</li>
+                            <li>Keep this tab open but visit the malicious companion.</li>
+                            <li>Launch any CSRF vector and return to refresh the profile.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div id="registerForm" class="form-panel">
+                    <h2>Register (still unsafe)</h2>
+                    <p class="helper-text">New accounts also inherit cookie-based sessions. Perfect for demos where you don't want to reuse real creds.</p>
+                    <form id="registerFormEl">
+                        <input type="text" id="regUsername" placeholder="Username" required>
+                        <input type="password" id="regPassword" placeholder="Password" required>
+                        <input type="date" id="regBirthdate" required>
+                        <input type="file" id="regProfilePic" accept="image/*">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="profileSection" class="panel-stack" style="display: none;">
+                <div class="panel-header">
+                    <span class="panel-label">Active vulnerable session</span>
+                    <button id="refreshBtn" class="btn btn-secondary">🔄 Refresh Profile</button>
+                </div>
+                <div class="warning-box" style="margin-bottom: 18px;">
+                    <h3>🚨 CSRF RISK</h3>
+                    <p>Any malicious site can now perform authenticated actions thanks to automatically attached cookies.</p>
+                    <div id="cookieInfo"></div>
+                </div>
+                <div id="profileView" class="profile-view">
+                    <div class="profile-card">
+                        <div class="profile-picture">
+                            <img id="profileImg" src="" alt="Profile Picture" style="display: none;">
+                            <div id="noProfileImg" class="no-image">No Profile Picture</div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="stat-card">
+                                <p class="stat-label">Username</p>
+                                <p class="stat-value"><span id="profileUsername"></span></p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Birthdate</p>
+                                <p class="stat-value"><span id="profileBirthdate"></span></p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">User ID</p>
+                                <p class="stat-value"><span id="profileUserId"></span></p>
+                            </div>
+                            <p id="authMethodDisplay" class="vulnerable">🚨 Cookie-Based Authentication (VULNERABLE)</p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="editProfileBtn" class="btn btn-secondary">Edit Profile</button>
+                    </div>
+                </div>
+
+                <div id="editProfileForm" class="form-panel" style="display: none;">
+                    <h3>Edit profile (still exploitable)</h3>
+                    <form id="editFormEl">
+                        <input type="text" id="editUsername" placeholder="Username">
+                        <input type="password" id="editPassword" placeholder="New Password (optional)">
+                        <input type="date" id="editBirthdate">
+                        <input type="file" id="editProfilePic" accept="image/*">
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div id="messages" class="messages"></div>
+    </main>
+
+    <script src="script_vuln.js"></script>
+</body>
+</html>
